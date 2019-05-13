@@ -12,6 +12,9 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    avatar: {
+        type: String
+    },
     password: {
         type: String,
         required: true
@@ -19,10 +22,7 @@ const userSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    },
-    avatar: {
-        type: String
-    }
+    }   
 
 })
 
