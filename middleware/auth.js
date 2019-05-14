@@ -1,8 +1,10 @@
-//Note that you can also use passport
+//Note that you can also use passport, but not really needed in this app
 
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
+
+//Note how this middleware can access the req and res variables
 module.exports = function(req, res, next){
     // Get the token from header
     const token = req.header('x-auth-token');
