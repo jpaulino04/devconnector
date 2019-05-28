@@ -10,6 +10,7 @@ const {check, validationResult} = require('express-validator/check')
 
 router.get('/', auth, async (req, res) => {
     try{
+		//after the auth middleware the user.id is available
         const user = await User.findById(req.user.id).select('-password');
         res.json(user)
     }catch(err){
