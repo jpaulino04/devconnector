@@ -102,4 +102,19 @@ async (req, res) => {
     }
 })
 
+// @route Get  api/profile/
+// @desc  All profiles
+// @access public
+
+router.get('/', async (req, res) => {
+    try {
+        const users = await User.find().populate('user', ['avatar'])
+        res.json(users)
+        
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error')
+    }
+})
+
 module.exports = router;
