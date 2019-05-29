@@ -28,6 +28,7 @@ const profileSchema = new mongoose.Schema({
     githubusername: {
         type: String
     },
+    //Experience is an array because there will be more than one experience added to users
     experience: [
         {
             title: {
@@ -42,7 +43,8 @@ const profileSchema = new mongoose.Schema({
                 type: String
             },
             from: {
-                type: Date
+                type: Date,
+                required: true
             },
             to: {
                 type: Date

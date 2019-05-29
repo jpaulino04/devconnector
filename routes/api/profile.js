@@ -161,4 +161,61 @@ router.delete('/', auth, async (req, res) => {
     res.json({msg: "User removed"});
 })
 
+
+
+// @route PUT api/profile/experience
+// @desc  Add Profile Experience
+// @access Private
+//Note: Experience is part of the Profile document
+//Its lie its own resource but part of profile
+// Reason why we are making it a PUT instead of a POST
+
+
+router.put('/experience', [auth,
+    check('title', 'Title is required').not().isEmpty(),
+    check('company', 'Company is required').not().isEmpty(),
+    check('from', 'From is required').not().isEmpty()
+],
+async (req, res) => {
+
+    const errors = validationResult(req);
+    
+    if(!errors.isEmpty()){
+        console.log(errors)
+        return res.status(400).json({errors: errors.array()})
+    }
+
+    const {
+        title, 
+        company,
+        from,
+        to,
+        location,
+        current,
+        description
+    } = req.body;
+
+    const newExp = {title, company, location, from, to, current, description}
+
+    try {
+        const profile = await Profile.findOne({user: req.user.id})
+
+        //Unshift places the item at the beginning of the array (on top)
+        profile.experience.unshift(newExp);
+
+        await profile.save();
+        res.json({experience: profile})
+        
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error')
+    }
+    
+})
+
+
+
+
+
+
 module.exports = router;
