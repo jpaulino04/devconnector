@@ -242,15 +242,37 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
 // @desc  Add Profile Education
 // @access Private
 
-router.put('/experience/education', [auth
+router.put('/experience/education', [auth,
+    [
 
+    check('school', 'School is required').not().isEmpty(),
+    check('degree', 'Degree is required').not().isEmpty(),
+    check('from', 'From is required').not().isEmpty(),
+    check('fieldofstudy', 'Field of Study is required').not().isEmpty()
+    ]
 
 ], 
 
 async(req, res) => {
 
-    const education = Profile.findOne({user: req.user.id})
-    
+    const { school, degree, fieldofstudy, from, to, current, description} = req.body;
+
+    const newEdu = {school, degree, fieldofstudy, from, to, current, description};
+
+    try {
+
+        Profile.findOne({user: req.user.id})
+
+        profile.education.unshift(newEdu)
+
+        await profile.save();
+
+        res.json(profile)
+        
+    } catch (err) {
+        return res.status(500).send("Server Error")
+    }
+
 })
 
 
