@@ -25,7 +25,7 @@ router.get('/me', auth, async (req, res) => {
     }
 })
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // @route POST api/profile/
 // @desc  Create or update user profile
 // @access protected
@@ -102,6 +102,7 @@ async (req, res) => {
     }
 })
 
+///////////////////////////////////////////////////////////////////////////////////////////////
 // @route Get  api/profile/
 // @desc  All profiles
 // @access public
@@ -118,7 +119,7 @@ router.get('/', async (req, res) => {
 })
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // @route Get  api/profile/user/:user_id
 // @desc  Get profile by the User ID 
 //Note that there is also a Profile ID
@@ -143,7 +144,7 @@ router.get('/user/:user_id', async (req, res) => {
 })
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // @route Delete api/profile/
 // @desc  Delete profile, user & posts
 // @access Private
@@ -162,7 +163,7 @@ router.delete('/', auth, async (req, res) => {
 })
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // @route PUT api/profile/experience
 // @desc  Add Profile Experience
 // @access Private
@@ -213,7 +214,7 @@ async (req, res) => {
     
 })
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // @route DELETE api/profile/experience/:exp_id
 // @desc  Delete profile experience
 // @access Private
@@ -237,12 +238,12 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
     }
 })
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 // @route PUT api/profile/education
 // @desc  Add Profile Education
 // @access Private
 
-router.put('/experience/education', [auth,
+router.put('/education', [auth,
     [
 
     check('school', 'School is required').not().isEmpty(),
@@ -252,16 +253,21 @@ router.put('/experience/education', [auth,
     ]
 
 ], 
-
 async(req, res) => {
 
-    const { school, degree, fieldofstudy, from, to, current, description} = req.body;
+    const errors = validationResult(req);
 
+    const { school, degree, fieldofstudy, from, to, current, description} = req.body;
     const newEdu = {school, degree, fieldofstudy, from, to, current, description};
 
-    try {
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+    
 
-        Profile.findOne({user: req.user.id})
+    try {        
+
+        const profile = await Profile.findOne({user: req.user.id})
 
         profile.education.unshift(newEdu)
 
@@ -275,6 +281,33 @@ async(req, res) => {
 
 })
 
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// @route DELETE api/profile/education/:exp_id
+// @desc  Delete profile education
+// @access Private
+router.delete('/education/:edu_id', auth, async(req, res) => {
+
+    try {
+        const profile = await Profile.findOne({user: req.user.id})
+
+        const removeIndex = profile.education.map(item => item.id).indexOf(req.params.edu_id);        
+
+        profile.education.splice(removeIndex, 1);
+
+        await profile.save()
+
+        res.json({msg: "Deleted education", result: profile})
+
+
+    } catch (err) {
+        return res.status(500).send("Server Error!");
+    }
+
+
+})
 
 
 
