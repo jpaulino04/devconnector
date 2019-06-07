@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {check, validationResults} = require('express-validator/check');
+const {check, validationResult} = require('express-validator/check');
+const auth = require('../../middleware/auth');
 
 const User = require('../../models/User');
 const Profile = require('../../models/Profile');
@@ -9,11 +10,11 @@ const Post = require('../../models/Post');
 // @route POST /api/posts
 // @desc  Create a post
 //@access Private
-router.get('/', [auth,
+router.post('/', [auth,
     check('text', 'Text is required').not().isEmpty()
 ],
 async (req, res) => {
-    const errors = validationResults(req);
+    const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({errors: errors.array()});
     }
