@@ -128,4 +128,19 @@ router.put('/like/:id', auth, async(req, res) =>{
 
 })
 
+
+// @route PUT /api/posts/comment/
+// @desc  Create a comment
+//@access Private
+router.post('/comment/', [auth,
+
+    [
+
+    ],
+async (req, res) => {
+
+}
+])
+
+
 module.exports = router;
