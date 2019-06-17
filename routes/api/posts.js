@@ -132,13 +132,39 @@ router.put('/like/:id', auth, async(req, res) =>{
 // @route PUT /api/posts/comment/
 // @desc  Create a comment
 //@access Private
-router.post('/comment/', [auth,
+router.post('/comments/', [auth,
 
     [
-
+        check('text', 'Text is required').not().isEmpty()
     ],
 async (req, res) => {
 
+    let errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        console.error(errors.message)
+        res.status(400).json({msg: errors.array})
+    }
+
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        const post = await Post.findById(req.params.id);
+
+        const newComent = {
+            text: req.body.text,
+            name: user.name,
+            avatar: user.avatar,
+            user: req.user.id
+        }
+
+        post.comments.unshift(newComent);
+
+        await post.save()
+
+        res.json(post.comments)
+    } catch (error) {
+        res.status(500).send("Server Error")
+    }
 }
 ])
 
