@@ -132,7 +132,7 @@ router.put('/like/:id', auth, async(req, res) =>{
 // @route PUT /api/posts/post_id/comment/
 // @desc  Create a comment
 //@access Private
-router.post('/:post_id/comments/', [auth,
+router.put('/:post_id/comments/', [auth,
 
     [
         check('text', 'Text is required').not().isEmpty()
