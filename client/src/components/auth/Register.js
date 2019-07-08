@@ -2,6 +2,8 @@ import React, {Fragment, useState} from 'react'
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux'; //notice it is also exported
 import {setAlert} from '../../actions/alert';
+//actions are also passed to the connect function at export(bottom)
+//connect also gets any state as the first parameter:allows to access props.setAlert
 
 const Register = (props) => {
     const [formData, setFormData] = useState({
@@ -19,6 +21,7 @@ const Register = (props) => {
         e.preventDefault();
 
         if(password !== password2){
+            //
             props.setAlert('Passwords do not match', 'danger');
         } else {
             console.log("Success");
