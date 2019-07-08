@@ -1,7 +1,7 @@
 import {SET_ALERT, REMOVE_ALERT} from '../actions/types';
 
+//This array is originally empty and will contain objects with ids, etc
 const initialState = [];
-
 
 export default function(state = initialState, action) {
     const {type, payload} = action;
