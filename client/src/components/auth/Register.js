@@ -81,3 +81,4 @@ const Register = (props) => {
 }
 
 export default connect(null, {setAlert})(Register);
+{/* Connect this component to redux */}
