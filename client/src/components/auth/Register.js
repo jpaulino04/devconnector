@@ -24,6 +24,7 @@ const Register = ({setAlert}) => {
         e.preventDefault();
 
         if(password !== password2){
+            //setAlert call!
             setAlert('Passwords do not match', 'danger');
         } else {
             console.log("Success");
@@ -81,9 +82,12 @@ const Register = ({setAlert}) => {
     )
 }
 
-Register.PropTypes = {
+Register.propTypes = {
     setAlert: PropTypes.func.isRequired
 }
 
 export default connect(null, {setAlert})(Register);
 {/* Connect this component to redux */}
+{/* using setAlert with connect makes it available within the props */}
+
+
