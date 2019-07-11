@@ -4,6 +4,8 @@ import {connect} from 'react-redux'; //notice it is also exported
 import {setAlert} from '../../actions/alert'; // bring in an action
 //actions are also passed to the connect function at export(bottom)
 //connect also gets any state as the first parameter:allows to access props.setAlert
+import PropTypes from 'prop-types';
+
 
 //instead of props, you can destructure setAlert:
 const Register = ({setAlert}) => {
@@ -77,6 +79,10 @@ const Register = ({setAlert}) => {
             </p>
         </Fragment>
     )
+}
+
+Register.PropTypes = {
+    setAlert: PropTypes.func.isRequired
 }
 
 export default connect(null, {setAlert})(Register);
