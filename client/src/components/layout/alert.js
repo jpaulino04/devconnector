@@ -13,7 +13,7 @@ Alert.propTypes = {
 
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
     alerts: state.alert
 })
 
