@@ -1,6 +1,7 @@
 import React, {Fragment, useState} from 'react'
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux'; //notice it is also exported
+import {register} from '../../actions/auth'; // bring in an action
 import {setAlert} from '../../actions/alert'; // bring in an action
 //actions are also passed to the connect function at export(bottom)
 //connect also gets any state as the first parameter:allows to access props.setAlert
@@ -8,7 +9,7 @@ import PropTypes from 'prop-types';
 
 
 //instead of props, you can destructure setAlert:
-const Register = ({setAlert}) => {
+const Register = ({setAlert, register}) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -27,7 +28,7 @@ const Register = ({setAlert}) => {
             //setAlert call!
             setAlert('Passwords do not match', 'danger');
         } else {
-            console.log("Success");
+            register({ name, email, password })
         }
     }
     
@@ -83,10 +84,11 @@ const Register = ({setAlert}) => {
 }
 
 Register.propTypes = {
-    setAlert: PropTypes.func.isRequired
+    setAlert: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired,
 }
 
-export default connect(null, {setAlert})(Register);
+export default connect(null, {setAlert, register})(Register);
 {/* Connect this component to redux */}
 {/* using setAlert with connect makes it available within the props */}
 
